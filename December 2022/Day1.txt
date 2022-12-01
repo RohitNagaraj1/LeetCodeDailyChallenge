@@ -1,0 +1,31 @@
+1704. Determine if String Halves Are Alike
+
+public class Solution 
+{
+    public bool HalvesAreAlike(string s) 
+    {
+        int n = s.Length;
+        int count = 0;
+        string vowels = "aeiouAEIOU";
+        
+        for (int i = 0; i < n/2; i++)
+        {
+            string temp = Char.ToString(s[i]);
+            if (vowels.Contains(temp))
+            {
+                count++;
+            }
+        }
+        
+        for (int i = n/2; i < n; i++)
+        {
+            string temp = Char.ToString(s[i]);
+            if (vowels.Contains(temp))
+            {
+                count--;
+            }
+        }
+        
+        return count == 0;
+    }
+}
