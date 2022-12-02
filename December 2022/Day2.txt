@@ -1,0 +1,42 @@
+1657. Determine if Two Strings Are Close
+
+// character must be present in both word1, word2
+// frequency of characters mush be same 
+
+public class Solution 
+{
+    public bool CloseStrings(string word1, string word2) 
+    {
+        int[] a1 = new int[26];
+        int[] a2 = new int[26];
+        
+        int[] flag = new int[26];
+        int[] flag2 = new int[26];
+        
+        foreach (var item in word1)
+        {
+            int index = item - 'a';
+            a1[index]++;
+            flag[index] = 1;
+        }
+        
+        foreach (var item in word2)
+        {
+            int index = item - 'a';
+            a2[index]++;
+            flag2[index] = 1;
+        }
+            
+        
+        Array.Sort(a1);
+        Array.Sort(a2);
+        
+        for (int i = 0; i < 26; i++)
+        {
+            if (a1[i] != a2[i] || flag[i] != flag2[i])
+                return false;
+        }
+        
+        return true;
+    }
+}
