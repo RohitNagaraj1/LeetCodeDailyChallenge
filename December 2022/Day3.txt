@@ -1,0 +1,51 @@
+451. Sort Characters By Frequency
+
+
+public class Solution 
+{
+    class Pair
+    {
+        public int freq;
+        public char value;
+        
+        public Pair(int freq, char value)
+        {
+            this.freq = freq;
+            this.value = value;
+        }
+    }
+    
+    public string FrequencySort(string s) 
+    {
+        Dictionary<char, Pair> map = new Dictionary<char, Pair>();
+        
+        for (int i = 0; i < s.Length; i++)
+        {
+            if (!map.ContainsKey(s[i]))
+            {
+                map.Add(s[i], new Pair(1, s[i]));
+            }
+            else
+            {
+                Pair current = map[s[i]];
+                current.freq++;
+            }
+        }
+        
+        Pair[] pairs = map.Values.ToArray();
+        
+        Array.Sort(pairs, (a, b) => b.freq - a.freq);
+        
+        StringBuilder sb = new StringBuilder();
+        
+        foreach (Pair item in pairs)
+        {
+            for (int i = 0; i < item.freq; i++)
+            {
+                sb.Append(item.value);
+            }
+        }
+        
+        return sb.ToString();
+    }
+}
