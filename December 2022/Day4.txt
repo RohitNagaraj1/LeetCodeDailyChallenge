@@ -1,0 +1,37 @@
+2256. Minimum Average Difference
+
+public class Solution 
+{
+    public int MinimumAverageDifference(int[] nums) 
+    {
+        int n = nums.Length;
+        long[] preSum = new long[n+1];
+        long sum = 0;
+        
+        for (int i = 0; i < n; i++)
+        {
+            preSum[i] = sum;
+            sum += nums[i];
+        }
+        
+        preSum[n] = sum;
+        long min = Int32.MaxValue;
+        int index = 0;
+        
+        for (int i = 1; i <= n; i++)
+        {
+            long left = preSum[i]/(i);
+            long right = (n-i) > 0 ? (preSum[n] - preSum[i])/(n-i) : 0;
+            
+            long abs = Math.Abs(left - right);
+            
+            if (abs < min)
+            {
+                min = abs;
+                index = i-1;
+            }
+        }
+        
+        return index;
+    }
+}
