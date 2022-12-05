@@ -1,0 +1,17 @@
+876. Middle of the Linked List
+
+public class Solution {
+    public ListNode MiddleNode(ListNode head) 
+    {
+        var slow = head;
+        var fast = head.next;
+        
+        while (fast != null)
+        {
+            fast = fast.next?.next;
+            slow = slow.next;
+        }
+        
+        return slow;
+    }
+}
