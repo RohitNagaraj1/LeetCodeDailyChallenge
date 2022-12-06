@@ -1,0 +1,34 @@
+328. Odd Even Linked List
+
+public class Solution 
+{
+    public ListNode OddEvenList(ListNode head) 
+    {
+        ListNode even = new ListNode();
+        ListNode temp1 = even;
+        ListNode odd = new ListNode();
+        ListNode temp2 = odd;
+        bool flag = true;
+
+        while (head != null)
+        {
+            if (flag)
+            {
+                temp2.next = head;
+                temp2 = temp2.next;
+            }
+            else
+            {
+                temp1.next = head;
+                temp1 = temp1.next;
+            }
+
+            head = head.next;
+            flag = !flag;
+        }
+        temp2.next = even.next;
+        temp1.next = null;
+
+        return odd.next;
+    }
+}
