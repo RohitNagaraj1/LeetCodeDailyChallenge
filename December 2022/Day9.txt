@@ -1,0 +1,36 @@
+1026. Maximum Difference Between Node and Ancestor
+
+public class Solution {
+    
+    public int MaxAncestorDiff(TreeNode root) 
+    {
+        int[] result = new int[1];
+        Solve(root, root.val, root.val, result);
+        return result[0];
+    }
+
+    public void Solve(TreeNode root, int min, int max, int[] result)
+    {
+        if (root == null)
+        {
+            return;
+        }
+
+        result[0] = Math.Max(result[0], Math.Abs(max - min));
+
+        if (root.left != null)
+        {
+            int min1 = Math.Min(min, root.left.val);
+            int max1 = Math.Max(max, root.left.val);
+            Solve(root.left, min1, max1, result);
+        }
+
+        if (root.right != null)
+        {
+            int min1 = Math.Min(min, root.right.val);
+            int max1 = Math.Max(max, root.right.val);
+            Solve(root.right, min1, max1, result);
+        }
+    }
+
+}
