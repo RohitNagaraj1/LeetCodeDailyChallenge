@@ -1,0 +1,37 @@
+1339. Maximum Product of Splitted Binary Tree
+
+public class Solution {
+    static long mod = (long)1E9 + 7;
+    public int MaxProduct(TreeNode root) 
+    {
+        long[] result = new long[1];
+        long totalSum = TotalSum(root);
+        SubTreeSum(root, result, totalSum);
+        
+        int ans = (int)(result[0]%mod);
+        return ans;
+    }
+
+    public long TotalSum(TreeNode root)
+    {
+        if (root == null)
+            return 0;
+        
+        return TotalSum(root.left) + TotalSum(root.right) + root.val;
+    }
+
+    public long SubTreeSum(TreeNode root, long[] result, long totalSum)
+    {
+        if (root == null)
+            return 0;
+        
+        long subTreeSum = 0;
+        subTreeSum += SubTreeSum(root.left, result, totalSum);
+        subTreeSum += SubTreeSum(root.right, result, totalSum);
+        subTreeSum += root.val;
+
+        result[0] = Math.Max(result[0], subTreeSum * (totalSum-subTreeSum));
+
+        return subTreeSum;
+    }
+}
