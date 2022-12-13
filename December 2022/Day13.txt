@@ -1,0 +1,30 @@
+931. Minimum Falling Path Sum
+
+public class Solution {
+    public int MinFallingPathSum(int[][] matrix) 
+    {
+        int n = matrix.Length;
+        
+        for (int i = 1; i < n; i++)
+        {
+            for (int j = 0; j < n; j++)
+            {
+                int left = (j-1) >= 0 ? matrix[i-1][j-1] : Int32.MaxValue;
+                int mid = matrix[i-1][j];
+                int right = (j+1) < n ? matrix[i-1][j+1] : Int32.MaxValue;
+
+                int current = Math.Min(left, Math.Min(mid, right));
+                matrix[i][j] += current;
+            }
+        }
+
+        int ans = Int32.MaxValue;
+
+        for (int i = 0; i < n; i++)
+        {
+            ans = Math.Min(ans, matrix[n-1][i]);
+        }
+
+        return ans;
+    }
+}
