@@ -1,0 +1,50 @@
+309. Best Time to Buy and Sell Stock with Cooldown
+
+public class Solution {
+    int[] nums;
+    int[][][] dp;
+    public int MaxProfit(int[] prices) 
+    {
+        nums = prices;
+        dp = new int[prices.Length][][];
+        
+        for (int i = 0; i < nums.Length; i++)
+        {
+            dp[i] = new int[2][];
+            dp[i][0] = new int[2];
+            dp[i][1] = new int[2];
+            Array.Fill(dp[i][0], -1);
+            Array.Fill(dp[i][1], -1);
+        }
+        
+        return Solve(0, true, false);
+    }
+    
+    public int Solve(int index, bool buy, bool isCoolDown)
+    {
+        if (index >= nums.Length)
+            return 0;
+        int buyIndex = buy ? 1 : 0;
+        int coolIndex = isCoolDown ? 1 : 0;
+        
+        if (dp[index][buyIndex][coolIndex] != -1)
+        {
+            return dp[index][buyIndex][coolIndex];
+        }
+        
+        int ans = 0;
+        ans = Solve(index+1, buy, false);
+        
+        if (buy && !isCoolDown)
+        {
+            ans = Math.Max(ans, -nums[index] + Solve(index+1, !buy, false));
+        }
+        else if (!buy)
+        {
+            ans = Math.Max(ans, nums[index] + Solve(index+1, !buy, true));
+        }
+        
+        dp[index][buyIndex][coolIndex] = ans;
+        return ans;
+    }
+}

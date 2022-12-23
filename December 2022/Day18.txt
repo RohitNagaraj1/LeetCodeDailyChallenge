@@ -1,0 +1,24 @@
+739. Daily Temperatures
+
+public class Solution {
+    public int[] DailyTemperatures(int[] T) {
+        if (T == null || T.Length == 0)
+            return new int[] { };
+        
+        Stack<int[]> stack = new Stack<int[]>();
+        int[] result = new int[T.Length];
+        
+        for (int i = 0; i < T.Length; i++)
+        {
+            while (stack.Count > 0 && stack.Peek()[0] < T[i])
+            {
+                result[stack.Peek()[1]] = i - stack.Peek()[1];
+                stack.Pop();
+            }
+            
+            stack.Push(new int[] { T[i], i });
+        }
+        
+        return result;
+    }
+}

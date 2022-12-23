@@ -1,0 +1,39 @@
+841. Keys and Rooms
+
+public class Solution {
+    public bool CanVisitAllRooms(IList<IList<int>> rooms) 
+    {
+        var queue = new Queue<int>();
+        
+        var visited = new bool[rooms.Count()];
+        visited[0] = true;
+        
+        foreach (var item in rooms[0])
+        {
+            queue.Enqueue(item);
+        }
+        
+        while (queue.Count > 0)
+        {
+            var current = queue.Dequeue();
+            
+            if (!visited[current])
+            {
+                foreach (var item in rooms[current])
+                {
+                    queue.Enqueue(item);
+                }
+            }
+            
+            visited[current] = true;
+        }
+        
+        for (int i = 0; i < rooms.Count(); i++)
+        {
+            if (!visited[i])
+                return false;
+        }
+        
+        return true;
+    }
+}

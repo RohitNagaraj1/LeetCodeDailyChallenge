@@ -1,0 +1,61 @@
+886. Possible Bipartition
+
+public class Solution {
+    List<int>[] adj;
+    int[] color;
+    int N;
+    public bool PossibleBipartition(int n, int[][] dislikes) 
+    {
+        adj = new List<int>[n+1];
+        
+        for (int i = 0; i <= n; i++)
+            adj[i] = new List<int>();
+        
+        foreach (var d in dislikes)
+        {
+            adj[d[0]].Add(d[1]);
+            adj[d[1]].Add(d[0]);
+        }
+        
+        color = new int[n+1];
+        Array.Fill(color, -1);
+        N = n;
+        
+        for (int i = 1; i <=n; i++)
+        {
+            if (color[i] == -1)
+            {
+                if (!BFS(i))
+                    return false;
+            }
+        }
+        
+        return true;
+    }
+    
+    public bool BFS(int i)
+    {
+        var queue = new Queue<int>();
+        
+        queue.Enqueue(i);
+        color[i] = 1;
+        
+        while (queue.Count > 0)
+        {
+            int cur = queue.Dequeue();
+            foreach (var child in adj[cur])
+            {
+                if (color[child] == color[cur])
+                    return false;
+                
+                if (color[child] == -1)
+                {
+                    color[child] = 1 - color[cur];
+                    queue.Enqueue(child);
+                }
+            }
+        }
+        
+        return true;
+    }
+}

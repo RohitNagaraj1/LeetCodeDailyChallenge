@@ -1,0 +1,57 @@
+232. Implement Queue using Stacks
+
+public class MyQueue {
+    Stack<int> stack1;
+    Stack<int> stack2;
+
+    public MyQueue() 
+    {
+        stack1 = new Stack<int>();
+        stack2 = new Stack<int>();
+    }
+    
+    public void Push(int x) 
+    {
+        if (stack2.Count == 0 && stack1.Count == 0)
+        {
+            stack2.Push(x);
+        }
+        else
+        {
+            stack1.Push(x);
+        }
+    }
+    
+    public int Pop() 
+    {   
+        var temp = Peek();
+        stack2.Pop();
+        return temp;
+    }
+    
+    public int Peek() 
+    {
+        if (stack2.Count >= 1)
+        {
+            return stack2.Peek();
+        }
+        else
+        {
+            while (stack1.Count > 0)
+            {
+                var temp = stack1.Peek();
+                stack2.Push(temp);
+                stack1.Pop();
+            }
+            return stack2.Peek();
+        }
+    }
+    
+    public bool Empty() 
+    {
+        if (stack1.Count + stack2.Count > 0)
+            return false;
+        
+        return true;
+    }
+}

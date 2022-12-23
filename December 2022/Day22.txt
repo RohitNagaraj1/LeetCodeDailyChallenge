@@ -1,0 +1,59 @@
+834. Sum of Distances in Tree
+
+public class Solution {
+    
+    private int[] count; // count[i]: total # of nodes in the subtree (root is i), including root
+    private int[] res;
+    private List<HashSet<int>> tree;
+    
+    public int[] SumOfDistancesInTree(int n, int[][] edges) {
+        
+        count = new int[n];
+        res = new int[n];
+        
+        tree = new List<HashSet<int>>();
+        for(int i = 0; i < n; i++)
+            tree.Add(new HashSet<int>());
+        
+        foreach(var edge in edges)
+        {
+            tree[edge[0]].Add(edge[1]);
+            tree[edge[1]].Add(edge[0]);
+        }
+        
+        postOrder(0, -1);
+        preOrder(0, -1);
+        
+        return res;
+    }
+    
+    private void postOrder(int root, int prev)
+    {
+        foreach(var node in tree[root])
+        {
+            // only take nodes in subtree into consideration
+            if(node != prev)
+            {
+                postOrder(node, root);
+                count[root] += count[node];
+                res[root] += res[node] + count[node];
+            }
+        }
+        count[root]++;
+    }
+    
+    private void preOrder(int root, int prev)
+    {
+        foreach(var node in tree[root])
+        {
+            if(node != prev)
+            {
+                // when root moves to node
+                // count[node] nodes will 1 unit closer to the new root, therefore res[node] = res[root] - count[node]
+                // (n - count[node]) will create 1 unit distanec from the new root, therefore res[node] = res[root] - count[node] + n - count[node]
+                res[node] = res[root] - count[node] + count.Length - count[node];
+                preOrder(node, root);
+            }
+        }
+    }    
+}

@@ -1,0 +1,43 @@
+150. Evaluate Reverse Polish Notation
+
+public class Solution {
+    public int EvalRPN(string[] tokens) 
+    {
+        var stack = new Stack<int>();
+        
+        foreach (var item in tokens)
+        {
+            if (item == "+" || item == "-" || item == "*" || item == "/")
+            {
+                var num2 = stack.Pop();
+                var num1 = stack.Pop();
+                
+                switch (item)
+                {
+                    case "*" : var temp = num1 * num2;
+                                stack.Push(temp);
+                                break;
+                        
+                    case "/" : temp = num1 / num2;
+                                stack.Push(temp);
+                                break;
+                        
+                    case "+" : temp = num1 + num2;
+                                stack.Push(temp);
+                                break;
+                        
+                    case "-" : temp = num1 - num2;
+                                stack.Push(temp);
+                                break;
+                }
+            }
+            
+            else
+            {
+                stack.Push(Convert.ToInt32(item));
+            }
+        }
+        
+        return stack.Peek();
+    }
+}

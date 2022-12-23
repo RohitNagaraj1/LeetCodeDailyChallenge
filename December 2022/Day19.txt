@@ -1,0 +1,65 @@
+1971. Find if Path Exists in Graph
+
+public class Solution {
+    public bool ValidPath(int n, int[][] edges, int source, int destination) 
+    {
+        if (source == destination)
+            return true;
+        
+        var map = new Dictionary<int, List<int>>();
+        var visited = new bool[n];
+        var result = new LinkedList<int>();
+        
+        foreach(var item in edges)
+        {
+            if (map.ContainsKey(item[0]))
+            {
+                map[item[0]].Add(item[1]);
+            }
+            else
+            {
+                map.Add(item[0], new List<int>{item[1]});
+            }
+            
+            if (map.ContainsKey(item[1]))
+            {
+                map[item[1]].Add(item[0]);
+            }
+            else
+            {
+                map.Add(item[1], new List<int>{item[0]});
+            }
+        }
+        
+        visited[source] = true;
+        
+        if (!map.ContainsKey(source))
+            return false;
+        
+        result.AddLast(source);
+        
+        while (result.Count() > 0)
+        {
+            visited[result.First()] = true;
+            
+            if (map.ContainsKey(result.First()))
+            {
+                var item = map[result.First()];
+                
+                foreach (var list in item)
+                {
+                    if (list == destination)
+                        return true;
+                    
+                    if (!visited[list])
+                    {
+                        result.AddLast(list);
+                    }
+                } 
+            }
+            result.RemoveFirst();
+        }
+        
+        return false;
+    }
+}
