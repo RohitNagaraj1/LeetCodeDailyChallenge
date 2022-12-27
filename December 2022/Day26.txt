@@ -1,0 +1,20 @@
+55. Jump Game
+
+public class Solution {
+    public bool CanJump(int[] nums) 
+    {
+
+        int lastgoodindex = nums.Length - 1;
+        
+        for(int i = nums.Length - 1; i >= 0; i--)
+        {
+            if(i + nums[i] >= lastgoodindex)
+            {
+                lastgoodindex = i;
+            }
+        }
+        
+        return lastgoodindex == 0;
+    }
+
+}

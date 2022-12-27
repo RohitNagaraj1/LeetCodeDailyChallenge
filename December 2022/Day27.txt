@@ -1,0 +1,34 @@
+2279. Maximum Bags With Full Capacity of Rocks
+
+public class Solution {
+    public int MaximumBags(int[] capacity, int[] rocks, int additionalRocks) 
+    {
+        var pq = new PriorityQueue<int, int>();
+        var count = 0;
+        
+        for (int i = 0; i < rocks.Length; i++)
+        {
+            if (rocks[i] - capacity[i] >= 0)
+                count++;
+            else
+            {
+                var temp = capacity[i] - rocks[i];
+                pq.Enqueue(temp, temp);
+            }
+        }
+        
+        if (count == rocks.Length)
+            return count;
+        
+        while (pq.Count > 0 && additionalRocks > 0)
+        {
+            var item = pq.Dequeue();
+            additionalRocks -= item;
+            
+            if (additionalRocks >= 0)
+                count++;
+        }
+        
+        return count;
+    }
+}
