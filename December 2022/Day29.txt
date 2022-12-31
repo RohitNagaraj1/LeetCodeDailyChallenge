@@ -1,0 +1,55 @@
+1834. Single-Threaded CPU
+
+public class Solution {
+        public int[] GetOrder(int[][] tasks)
+        {
+            if (tasks == null || tasks.Length == 0)
+                return new int[] { };
+
+            List<int> res = new List<int>();
+            List<(int, int, int)> list = new List<(int, int, int)>();
+            SortedSet<(int, int, int)> jobQ = new SortedSet<(int, int, int)>(new Comparer());
+            int i = 0,
+                eTime = Int32.MinValue;
+
+            for (; i < tasks.Length; i++)
+                list.Add((i, tasks[i][0], tasks[i][1]));
+
+            list = list.OrderBy(x => x.Item2).ToList<(int, int, int)>();
+            i = 0;
+
+            while (i < list.Count || jobQ.Count > 0)
+                if (jobQ.Count > 0)
+                {
+                    (int, int, int) curJob = jobQ.First();
+                    jobQ.Remove(curJob);
+
+                    eTime = (eTime == Int32.MinValue ? curJob.Item2 : eTime) + curJob.Item3;
+
+                    res.Add(curJob.Item1);
+
+                    while (i < list.Count && list[i].Item2 <= eTime)
+                        jobQ.Add(list[i++]);
+                }
+                else
+                {
+                    int sTime = list[i].Item2;
+                    eTime = Int32.MinValue;
+
+                    while (i < list.Count && list[i].Item2 == sTime)
+                        jobQ.Add(list[i++]);
+                }
+
+            return res.ToArray();
+        }
+
+        public class Comparer : IComparer<(int, int, int)>
+        {
+            public int Compare((int, int, int) x, (int, int, int) y)
+            {
+                var res = x.Item3.CompareTo(y.Item3);
+
+                return res == 0 ? x.Item1.CompareTo(y.Item1) : res;
+            }
+        }
+}

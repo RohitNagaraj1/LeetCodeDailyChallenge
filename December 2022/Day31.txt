@@ -1,0 +1,29 @@
+980. Unique Paths III
+
+public class Solution {
+       
+    public int dfs(int[][] grid, int r, int c, int emptyCells) {
+        if (r < 0 || c < 0 || r >= grid.Length || c >= grid[0].Length) return 0;
+        if (grid[r][c] == 2 && emptyCells == -1) return 1;
+        if (grid[r][c] != 0) return 0;
+        grid[r][c] = -1;
+        var result = dfs(grid, r+1, c, emptyCells-1) + dfs(grid, r-1, c, emptyCells-1)
+            + dfs(grid, r, c+1, emptyCells-1) + dfs(grid, r, c-1, emptyCells-1);
+        grid[r][c] = 0;
+        return result;
+    }
+    
+    public int UniquePathsIII(int[][] grid) {
+        int emptyCells = 0, startR = -1, startC = -1;        
+        for (var q=0; q<grid.Length; q++) 
+            for (var w=0; w<grid[0].Length; w++) {
+                if (grid[q][w] == 0) emptyCells++;
+                if (grid[q][w] == 1) {
+                    grid[q][w] = 0;
+                    startR = q;
+                    startC = w;
+                }                    
+            }
+        return dfs(grid, startR, startC, emptyCells);
+    }
+}

@@ -1,0 +1,36 @@
+797. All Paths From Source to Target
+
+public class Solution {
+    public IList<IList<int>> AllPathsSourceTarget(int[][] graph) 
+    {
+        var queue = new Queue<(int, List<int>)>();
+        int n = graph.Length-1;
+        
+        queue.Enqueue((0, new List<int>{0}));
+        var result = new List<IList<int>>();
+        
+        while (queue.Count > 0)
+        {
+            int size = queue.Count;
+            
+            for (int i = 0; i < size; i++)
+            {
+                var current = queue.Dequeue();
+                
+                if (current.Item1 == n)
+                {
+                    result.Add(current.Item2);
+                }
+                
+                foreach (var item in graph[current.Item1])
+                {
+                    var temp = new List<int>(current.Item2);
+                    temp.Add(item);
+                    queue.Enqueue((item, temp));
+                }
+            }
+        }
+        
+        return result;
+    }
+}
